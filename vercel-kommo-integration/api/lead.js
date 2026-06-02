@@ -144,13 +144,13 @@ export default async function handler(req, res) {
     const utmSource = sanitizeString(body.utm_source || '', 100).toLowerCase();
     const gclid = sanitizeString(body.gclid || '', 200);
     const fbclid = sanitizeString(body.fbclid || '', 200);
-    let leadTag = 'Site';
-    if (utmSource.includes('google') || gclid) leadTag = 'Google Ads';
-    else if (utmSource.includes('facebook') || utmSource.includes('fb') || fbclid) leadTag = 'Facebook Ads';
-    else if (utmSource.includes('instagram') || utmSource.includes('ig')) leadTag = 'Instagram Ads';
+    let originTag = 'Site';
+    if (utmSource.includes('google') || gclid) originTag = 'Google Ads';
+    else if (utmSource.includes('facebook') || utmSource.includes('fb') || fbclid) originTag = 'Facebook Ads';
+    else if (utmSource.includes('instagram') || utmSource.includes('ig')) originTag = 'Instagram Ads';
 
     const complexPayload = [{
-      name: `Lead Site - ${name}`,
+      name: `Lead Dra Josiane - ${name}`,
       pipeline_id: KOMMO_PIPELINE_ID,
       status_id: KOMMO_STATUS_ID,
       ...(KOMMO_RESPONSIBLE_USER_ID && { responsible_user_id: KOMMO_RESPONSIBLE_USER_ID }),
@@ -163,7 +163,7 @@ export default async function handler(req, res) {
             { field_code: 'EMAIL', values: [{ value: email, enum_code: 'WORK' }] },
           ],
         }],
-        tags: [{ name: leadTag }],
+        tags: [{ name: originTag }],
       },
     }];
 
@@ -199,7 +199,7 @@ export default async function handler(req, res) {
       }
     }
 
-    console.log(`[OK] Lead criado: ${leadId} | tag: ${leadTag}`);
+    console.log(`[OK] Lead criado: ${leadId} | tag: ${originTag}`);
     return res.status(200).json({ ok: true, lead_id: leadId });
 
   } catch (err) {
